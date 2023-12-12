@@ -1,0 +1,118 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">My Club</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="eventsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Events
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+            <li><a class="dropdown-item" href="{% url 'list-events' %}">All Events</a></li>
+            <li><a class="dropdown-item" href="{% url 'add-event' %}">Add Event</a></li>
+            <li><a class="dropdown-item" href="{% url 'my-events' %}">My Events</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="venuesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Venues
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="venuesDropdown">
+            <li><a class="dropdown-item" href="{% url 'list-venue' %}">All Venues</a></li>
+            <li><a class="dropdown-item" href="{% url 'add-venue' %}">Add Venue</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="downloadsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Downloads
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="downloadsDropdown">
+            <li><a class="dropdown-item" href="{% url 'venue-text' %}">Venue File</a></li>
+            <li><a class="dropdown-item" href="{% url 'event-csv' %}">Event CSV File</a></li>
+          </ul>
+        </li>
+        {% if user.is_superuser %}
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'approve-events' %}">Approve Events</a>
+              </li>
+          </ul>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout-view' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register-user' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login-user' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+      <form class="d-flex" method="POST" action="{% url 'search-venues' %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Search Venues" name="searched" aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // JavaScript to collapse other dropdowns when a new dropdown is clicked
+  const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+
+  dropdowns.forEach((dropdown) => {
+    const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+
+    // Function to close the dropdown menu
+    const closeDropdown = () => {
+      dropdownMenu.classList.remove('show');
+    };
+
+    // Event listener for dropdown toggle click
+    dropdownToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (dropdownMenu.classList.contains('show')) {
+        closeDropdown();
+      } else {
+        closeOtherDropdowns();
+        dropdownMenu.classList.add('show');
+      }
+    });
+
+    // Event listener for document click
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      const isDropdownToggle = target.closest('.dropdown-toggle');
+      const isDropdownMenu = target.closest('.dropdown-menu');
+
+      if (!isDropdownToggle && !isDropdownMenu) {
+        closeOtherDropdowns();
+      } else if (isDropdownToggle && isDropdownMenu) {
+        if (!dropdownMenu.classList.contains('show')) {
+          closeOtherDropdowns();
+          dropdownMenu.classList.add('show');
+        } else {
+          closeDropdown();
+        }
+      }
+    });
+  });
+
+  // Function to close other dropdowns
+  const closeOtherDropdowns = () => {
+    dropdowns.forEach((dropdown) => {
+      const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+      if (dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+  };
+</script>

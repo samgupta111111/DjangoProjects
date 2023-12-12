@@ -1,0 +1,35 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="mb-4">Add Event</h1>
+
+        {% if submitted %}
+            <p class="text-success">Your event has been submitted successfully!</p>
+        {% else %}
+            <form action="" method="POST" class="form">
+                {% csrf_token %}
+
+                {% if form.is_bound %}
+                    {% if request.user.is_superuser %}
+                        {{ form.as_p }}
+                    {% else %}
+                        {{ form.name }}
+                        {{ form.date }}
+                        {{ form.venue }}
+                        {{ form.description }}
+                        {{ form.attendees }}
+                    {% endif %}
+                {% else %}
+                    {{ form.as_p }}
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

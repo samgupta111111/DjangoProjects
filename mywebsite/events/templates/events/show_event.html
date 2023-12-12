@@ -1,0 +1,21 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h4>{{ event.name }}</h4>
+          </div>
+          <div class="card-body">
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Venue:</strong> {{ event.venue }}</p>
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <!-- Add additional event details here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

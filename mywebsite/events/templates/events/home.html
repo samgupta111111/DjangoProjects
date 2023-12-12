@@ -1,0 +1,65 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="text-center">Welcome to Event Management</h1>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          {% if upcoming_events %}
+          <h5 class="card-title">Upcoming Events</h5>
+          <ul class="list-group">
+            {% for event in upcoming_events %}
+              <li class="list-group-item">
+                <a href="{% url 'show-event' event.id %}">{{ event.name }}</a>
+                <span class="badge badge-primary">{{ event.date }}</span>
+              </li>
+            {% empty %}
+              <li class="list-group-item">No upcoming events</li>
+            {% endfor %}
+            {% else %}
+      <p>Sorry, No Upcoming Events This Month.</p>
+    {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-lg-12">
+      <h2 class="text-center">About Us</h2>
+      <p class="text-center">
+
+We are a team of experienced event planners who are passionate about creating unforgettable experiences for our clients. We believe that every event should be unique and special, and we work closely with our clients to understand their vision and create an event that exceeds their expectations.
+
+We are currently in the development process of our new events management website. We are excited to share our progress with you and to get your feedback. We believe that our website will be a valuable resource for event planners and event attendees alike.
+
+We will be adding new features and content to our website on a regular basis. We will also be offering a variety of resources to help event planners plan and execute successful events.
+
+We are committed to providing our clients with the best possible service. We are always available to answer your questions and to help you plan your event.
+
+We look forward to working with you to create an unforgettable event.</p>
+      </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-lg-12">
+      <h2 class="text-center">Contact Us</h2>
+      <p class="text-center">For any inquiries or assistance, please feel free to contact us:</p>
+      <div class="text-center">
+        <p><i class="bi bi-telephone-fill"></i> Phone: +1234567890</p>
+        <p><i class="bi bi-envelope-fill"></i> Email: info@eventmanagement.com</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

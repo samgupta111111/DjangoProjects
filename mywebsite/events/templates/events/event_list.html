@@ -1,0 +1,210 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<style>
+  .card {
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card .card-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .card .card-body {
+    padding: 10px;
+  }
+
+  .card .card-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+
+  .card .card-text {
+    margin-bottom: 0;
+  }
+
+  .card .card-footer {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    text-align: right;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+
+  .btn-outline-secondary {
+    color: #6c757d;
+    background-color: transparent;
+    border-color: #6c757d;
+  }
+
+  .btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: #dc3545;
+  }
+
+  /* Pagination styles */
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .pagination .page-link {
+    color: #333;
+    background-color: transparent;
+    border-color: #ccc;
+    border-radius: 3px;
+  }
+
+  .pagination .page-link:hover {
+    color: #333;
+    background-color: #f8f9fa;
+    border-color: #ccc;
+  }
+
+  .pagination .page-link:focus {
+    color: #333;
+    background-color: #f8f9fa;
+    border-color: #ccc;
+    box-shadow: none;
+  }
+
+  .pagination .page-item.disabled .page-link {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .pagination .page-item.active .page-link {
+    color: #fff;
+    background-color: #333;
+    border-color: #333;
+  }
+
+  /* Additional styling for premium look */
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .pagination {
+    margin-top: 30px;
+  }
+</style>
+
+<div class="container">
+  <h1>All Events</h1>
+  <br/>
+  {% for event in pagee %}
+    {% if event.approved %}
+      <div class="card">
+        <div class="card-header">
+          {{ event.name }}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Venue: {{ event.venue }}</h5>
+          <p class="card-text">
+            <ul>
+              <li>Date: {{ event.date }}</li>
+              <li>Days Left: {{ event.days_left }}</li>
+              <li>Manager: {{ event.manager }}</li>
+              <li>Description: {{ event.description }}</li>
+            </ul>
+          </p>
+          <p class="card-text">
+            Attendees:
+            <ul>
+              {% for user in event.attendees.all %}
+                <li>{{ user }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        </div>
+        {% if user.is_authenticated and user == event.manager %}
+          <div class="card-footer text-muted">
+            <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary">
+              Update Event
+            </a>
+            <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger">
+              Delete Event
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      <br/>
+    {% endif %}
+  {% endfor %}
+
+  <div class="pagination">
+    <ul class="pagination">
+      {% if pagee.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="First">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ pagee.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&lt;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <a class="page-link" href="#">{{ pagee.number }}</a>
+      </li>
+
+      {% if pagee.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ pagee.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&gt;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ pagee.paginator.num_pages }}" aria-label="Last">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

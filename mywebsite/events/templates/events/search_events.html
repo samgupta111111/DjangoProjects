@@ -1,0 +1,45 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center">
+        {% if searched_events %}
+          <h1 class="mb-4">Search Results</h1>
+          {% for event in searched_events %}
+            <div class="card mb-3">
+              <div class="card-header">
+                {{ event.name }}
+              </div>
+              <div class="card-body">
+                <ul class="list-unstyled text-left">
+                  <li>&bull; <strong>Date:</strong> {{ event.date }}</li>
+                  <li>&bull; <strong>Venue:</strong> {{ event.venue }}</li>
+                  <li>&bull; <strong>Description:</strong> {{ event.description }}</li>
+                  <li>&bull; <strong>Manager:</strong> {{ event.manager }}</li>
+                  <!-- Add additional event details here -->
+                </ul>
+              </div>
+              {% if user.is_authenticated and user == event.manager %}
+              <div class="card-footer text-muted">
+                <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary">
+                  Update Event
+                </a>
+                <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger">
+                  Delete Event
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <h1>No Results Found</h1>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

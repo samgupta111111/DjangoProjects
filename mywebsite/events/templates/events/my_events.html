@@ -1,0 +1,43 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<h1>My Events</h1>
+
+{% if events %}
+  <div class="row">
+    {% for event in events %}
+      <div class="col-lg-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ event }}</h5>
+          </div>
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Venue: {{ event.venue }}</h6>
+            <ul class="list-unstyled">
+              <li><strong>Date:</strong> {{ event.date }}</li>
+              <li><strong>Manager:</strong> {{ event.manager }}</li>
+              <li><strong>Description:</strong> {{ event.description }}</li>
+              <!-- Uncomment the following lines to display attendees -->
+              <!--
+              <li>
+                <strong>Attendees:</strong>
+                <ul>
+                  {% for user in event.attendees.all %}
+                    <li>{{ user }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No events found.</p>
+{% endif %}
+
+{% endblock %}
+

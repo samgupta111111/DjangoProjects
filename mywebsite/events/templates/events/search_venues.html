@@ -1,0 +1,71 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<style>
+  .list-unstyled {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .list-unstyled li {
+    list-style-type: disc;
+    margin-bottom: 5px;
+  }
+</style>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center">
+        {% if searched %}
+          <h3 class="mb-4">You Searched For: {{ searched }}</h3>
+          {% for venue in venues %}
+            {% for owner in venue_owners %}
+            {% if owner.pk == venue.owner %}
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-lg-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4 class="mb-0">{{ venue }}</h4>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled">
+                        {% if venue.address %}
+                        <li><i class="bi bi-geo"></i> <strong>Address:</strong> {{ venue.address }}</li>
+                        {% endif %}
+                        {% if venue.phone %}
+                        <li><i class="bi bi-phone"></i> <strong>Phone:</strong> {{ venue.phone }}</li>
+                        {% endif %}
+                        {% if venue.zip %}
+                        <li><i class="bi bi-map-marker"></i> <strong>Zip Code:</strong> {{ venue.zip }}</li>
+                        {% endif %}
+                        {% if venue.web %}
+                        <li><i class="bi bi-link"></i> <strong>Web:</strong> <a href="{{ venue.web }}">{{ venue.web }}</a></li>
+                        {% endif %}
+                        {% if venue.email %}
+                        <li><i class="bi bi-envelope"></i> <strong>Email:</strong> {{ venue.email }}</li>
+                        {% endif %}
+                        <li><i class="bi bi-person"></i> <strong>Owner:</strong> {{ owner }}</li>
+                        {% if owner.email %}
+                        <li><i class="bi bi-envelope"></i> <strong>Owner's Email:</strong> {{ owner.email }}</li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+          {% endfor %}
+        {% else %}
+          <p>No venues found matching your search.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

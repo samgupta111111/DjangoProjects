@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete Confirmation</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Delete Confirmation</h1>
+    <p>Are you sure you want to delete this venue?</p>
+    <form action="{% url 'delete-venue' venue_id %}" method="POST">
+      {% csrf_token %}
+      <div class="btn-group" role="group">
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <a href="{% url 'list-venue' %}" class="btn btn-secondary">No</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Include Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!-- approve_events.html -->
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Approve Events</h1>
+        <br/>
+        {% for event in events %}
+            <div class="card">
+                <div class="card-header">
+                    {{ event.name }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Venue: {{ event.venue }}</h5>
+                    <p class="card-text">
+                        <ul>
+                            <li>Date: {{ event.date }}</li>
+                            <li>Days Left: {{ event.days_left }}</li>
+                            <li>Manager: {{ event.manager }}</li>
+                            <li>Description: {{ event.description }}</li>
+                            <li>Approval: {% if event.approved %}Approved{% else %}Pending{% endif %}</li>
+                        </ul>
+                    </p>
+                    <p class="card-text">
+                        Attendees:
+                        <ul>
+                            {% for user in event.attendees.all %}
+                                <li>{{ user }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="{% url 'approve-event' event.id %}" class="btn btn-outline-secondary">Approve Event</a>
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
+    </div>
+{% endblock %}
